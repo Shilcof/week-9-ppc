@@ -1,10 +1,38 @@
 <h1>New Party</h1>
 <%= form_for @party do |f| %>
 
-    <%= f.label :name %>
-    <%= f.text_field :name %>
-    <%= f.label :date %>
-    <%= f.date_field :date %>
+    <div>
+        <%= f.label :name %>
+        <%= f.text_field :name %>
+    </div>
+
+    <div>
+        <%= f.label :date %>
+        <%= f.date_field :date %>
+    </div>
+
+    <div>
+        <%= f.collection_select :category, Category.all, :id, :name %>
+    </div>
+
+    <%= f.fields_for :category do |category_fields| %>
+        <div>
+            <%= category_fields.label :name %>
+            <%= category_fields.text_field :name %>
+        </div>
+    <% end %>
+
+    <%= f.fields_for :parties_supplies do |parties_supplies_fields| %>
+        <div>
+            <%= parties_supplies_fields.fields_for :supply, Supply.new do |supplies_fields| %>
+                <%= supplies_fields.label :name %>
+                <%= supplies_fields.text_field :name %>
+            <% end %>
+            <%= parties_supplies_fields.label :quantity %>
+            <%= parties_supplies_fields.number_field :quantity %>
+        </div>
+    <% end %>
+
     <%= f.submit %>
 
 <% end %>

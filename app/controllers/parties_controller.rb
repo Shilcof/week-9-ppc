@@ -5,6 +5,10 @@ class PartiesController < ApplicationController
 
     def new
         @party = Party.new(name: 'Halloween')
+        @party.build_category
+        @party.parties_supplies.build
+        @party.parties_supplies.build
+        @party.parties_supplies.build
     end
 
     def create
@@ -17,12 +21,13 @@ class PartiesController < ApplicationController
     end
 
     def show
+        byebug
         @party = Party.find(params[:id])
     end
     
     private
     
     def party_params
-        params.require(:party).permit(:date, :budget, :name)
+        params.require(:party).permit(:date, :budget, :name, :category_id, category_attributes: [:name], parties_supplies_attributes: [:quantity, supply_attributes: [:name]] )
     end
 end
